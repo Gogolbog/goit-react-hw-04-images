@@ -29,26 +29,28 @@ export default function App() {
   };
 
   useEffect(() => {
-    setLoading(true);
-    apiSearchImg.resetPage();
-    apiSearchImg
-      .getImg(searchValue)
-      .then(data => {
-        if (data.hits.length === 0) {
-          return Notiflix.Notify.failure(
-            'Sorry, there are no images matching your search query. Please try again.',
-            { width: '400px', fontSize: '20px' }
-          );
-        }
-        galleryLengthCheck(data);
-        setImages(data.hits);
-      })
-      .catch(error => {
-        console.log(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    if (searchValue) {
+      setLoading(true);
+      apiSearchImg.resetPage();
+      apiSearchImg
+        .getImg(searchValue)
+        .then(data => {
+          if (data.hits.length === 0) {
+            return Notiflix.Notify.failure(
+              'Sorry, there are no images matching your search query. Please try again.',
+              { width: '400px', fontSize: '20px' }
+            );
+          }
+          galleryLengthCheck(data);
+          setImages(data.hits);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   }, [searchValue]);
 
   const onSubmit = value => {
